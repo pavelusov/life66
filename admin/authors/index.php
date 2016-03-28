@@ -1,23 +1,23 @@
 <?php
 include_once 'connect.php';
-
 //Запрашиваем список авторов
-
 try{
     $query = 'SELECT * FROM `joke_users`';
     $result = $pdo->query($query);
-    foreach ($result as $item) {
-        $authors[] = [
-            'id' => $item['id'],
-            'name' => $item['name'],
-            'email' => $item['email']
 
-        ];
     }
-}catch(PDOException $err){
+catch(PDOException $err){
     $error = 'Не удалось загрузить список авторов. Ошибка: ' . $err->getMessage();
     include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
     exit;
+}
+foreach ($result as $item) {
+    $authors[] = [
+        'id' => $item['id'],
+        'name' => $item['name'],
+        'email' => $item['email']
+
+    ];
 }
 
 // Погружаем файл и выводим в нем список авторов
@@ -57,8 +57,29 @@ if(isset($_POST['action']) && !empty($_POST['action']) == 'Удалить' ){
         exit;
     }
     //Удаляем шутки принадлежащие автору
-    
-
+    try{
+        $query = 'DELETE FROM `joke` WHERE autorid = :id';
+        $s = $pdo->prepare($query);
+        $s->bindValue(':id', $_POST['id']);
+        $s->execute();
+    }catch(PDOException $err){
+        $error = '<h2>Ошибка при удалении поговорки автора: </h2>' . $err->getMessage();
+        include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
+        exit;
+    }
+    //Удаляем имя автора
+    try{
+        $query = 'DELETE FROM `joke_users` WHERE id = :id';
+        $s = $pdo->prepare($query);
+        $s->bindValue(':id', $_POST['id']);
+        $s->execute();
+    }catch(PDOException $err){
+        $error = '<h2>Ошибка при удалении из категории: </h2>' . $err->getMessage();
+        include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
+        exit;
+    }
+    //header('Location: .');
+    //exit;
 
 }
 
