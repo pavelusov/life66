@@ -45,16 +45,20 @@ if(isset($_POST['action']) && !empty($_POST['action']) == 'Удалить' ){
     try{
         $query = 'DELETE FROM `jokecategory` WHERE `idjoke`= :id ';
         $s = $pdo->prepare($query);
+        //Для каждой поговорки
         foreach ($result as $item) {
             $jokeid = $result['id'];
-            $s->bindValue(':id', $jokeid;
+            $s->bindValue(':id', $jokeid);
             $s->execute();
         }
     }catch(PDOException $err){
         $error = '<h2>Ошибка при удалении из категории: </h2>' . $err->getMessage();
-        include 'error.html.php';
+        include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
         exit;
     }
+    //Удаляем шутки принадлежащие автору
+    
+
 
 }
 
