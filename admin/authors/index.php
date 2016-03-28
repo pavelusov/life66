@@ -1,27 +1,5 @@
 <?php
 include_once 'connect.php';
-//Запрашиваем список авторов
-try{
-    $query = 'SELECT * FROM `joke_users`';
-    $result = $pdo->query($query);
-
-    }
-catch(PDOException $err){
-    $error = 'Не удалось загрузить список авторов. Ошибка: ' . $err->getMessage();
-    include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
-    exit;
-}
-foreach ($result as $item) {
-    $authors[] = [
-        'id' => $item['id'],
-        'name' => $item['name'],
-        'email' => $item['email']
-
-    ];
-}
-
-// Погружаем файл и выводим в нем список авторов
-include 'authors.html.php';
 
 //Перехватываем запросы УДАЛИТЬ
 if(isset($_POST['action']) && !empty($_POST['action']) == 'Удалить' ){
@@ -78,10 +56,33 @@ if(isset($_POST['action']) && !empty($_POST['action']) == 'Удалить' ){
         include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
         exit;
     }
-    //header('Location: .');
-    //exit;
+    header('Location: .');
+    exit;
 
 }
+
+//Всегда идет последним до header. Запрашиваем список авторов
+try{
+    $query = 'SELECT * FROM `joke_users`';
+    $result = $pdo->query($query);
+
+}
+catch(PDOException $err){
+    $error = 'Не удалось загрузить список авторов. Ошибка: ' . $err->getMessage();
+    include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
+    exit;
+}
+foreach ($result as $item) {
+    $authors[] = [
+        'id' => $item['id'],
+        'name' => $item['name'],
+        'email' => $item['email']
+
+    ];
+}
+
+// Погружаем файл и выводим в нем список авторов
+include 'authors.html.php';
 
 
 
