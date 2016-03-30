@@ -40,7 +40,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
         <li>
            <form action="" method="post">
                <div>
-                   <?php htmlout($author['name'])?>
+                   <?php htmlout($author['name']) . htmlout(' - '). htmlout($author['email']); ?>
                    <input type="hidden" name="id" value="<?php echo $author['id'];?>"/>
                    <input type="submit" name="action" value="Редактировать"/>
                    <input type="submit" name="action" value="Удалить"/>
@@ -51,6 +51,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
     <?php endforeach;?>
 </ul>
 <a href="..">Вернуться в систему управления</a>
-<?php var_dump($result)?>
+<!--<?php var_dump($result)?>-->
 </body>
 </html>

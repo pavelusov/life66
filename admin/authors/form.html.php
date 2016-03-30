@@ -36,13 +36,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 <h1><?php htmlout($pagetitle);?></h1>
 <form action="?<?php htmlout($action);?>" method="post">
     <div>
-        <label for="name">Имя: <input type="text" name="name" value="<?php htmlout($name);?>" /></label>
+        <label for="name">Имя: <input type="text" name="nameuser" value="<?php htmlout($name);?>" /></label>
     </div>
     <div>
         <label for="email">Почта: <input type="text" name="email" value="<?php htmlout($email);?>" /></label>
     </div>
     <div>
-        <input type="hidden" value="<?php htmlout($id);?>" />
+        <input type="hidden" name="id" value="<?php htmlout($id);?>" />
         <input type="submit" value="<?php htmlout($button);?>" />
     </div>
 </form>
