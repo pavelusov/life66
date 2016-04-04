@@ -23,7 +23,7 @@ try{
     exit;
 }
 foreach ($result as $item) {
-    $category[] = [
+    $categories[] = [
         'id'=>$item['id'],
         'name'=>$item['cat_name']
     ];
