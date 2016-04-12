@@ -15,6 +15,15 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
             <?php foreach ($jokes as $joke):?>
             <tr>
                 <td><?php htmlout($joke['text']);?></td>
+                <td>
+                    <form action="?" method="post">
+                        <div>
+                            <input type="hidden" name="id" value="<?php htmlout($joke['id']);?>" />
+                            <input type="submit" name="action" value="Редактировать" />
+                            <input type="submit" name="action" value="Удалить" />
+                        </div>
+                    </form>
+                </td>
             </tr>
             <?php endforeach;?>
         </table>

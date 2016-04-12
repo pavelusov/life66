@@ -1,5 +1,95 @@
 <?php
 include_once 'connect.php';
+//Перехватываем кнопку "Редактировать"
+if(isset($_POST['action']) && $_POST['action'] == 'Редактировать'){
+    //получаем поговорку
+    try{
+        $sql = 'SELECT `id`, `joketext`, `autorid` FROM `joke` WHERE id = :id ';
+        $s = $pdo->prepare($sql);
+        $s->bindValue(':id', $_POST['id']);
+        $s->execute();
+
+
+    }catch(PDOException $err){
+        $error = 'Ошибка при получении данных' . $err->getMessage();
+        include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
+        exit;
+    }
+    $row = $s->fetch();
+    $pageTitle = 'Редактировать поговорку';
+    $action = 'editform';
+    $text = $row['joketext'];
+    $authorid = $row['autorid'];
+    $id = $row['id'];
+    $button = 'Обновить поговорку';
+
+    //Формируем список авторов
+    try{
+        $result = $pdo->query('SELECT `id`, `name` FROM `joke_users`');
+
+
+    }catch(PDOException $err){
+        $error = 'Ошибка при получении данных' . $err->getMessage();
+        include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
+        exit;
+    }
+    foreach ($result as $row) {
+        $authors[] = [
+            'id' => $row['id'],
+            'name' => $row['name']
+        ];
+    }
+
+
+    include 'form.html.php';
+    exit;
+
+}
+// Добавление новой шутки
+
+if(isset($_GET['add'])){
+    $pageTitle = 'Новая поговорка!';
+    $action = 'addform';
+    $text = '';
+    $authorid = '';
+    $id = '';
+    $button = 'Добавить поговорку';
+
+//Получаем список авторов
+    try{
+        $result = $pdo->query('SELECT `id`, `name` FROM `joke_users`');
+    }catch(PDOException $err){
+        $error = 'Ошибка при получении списка авторов' . $err->getMessage();
+        include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
+        exit;
+    }
+    foreach ($result as $item) {
+        $authors[] = [
+            'id'=>$item['id'],
+            'name'=>$item['name']
+        ];
+    }
+//Получаем список категорий
+    try{
+        $result = $pdo->query('SELECT `id`, `cat_name` FROM `category`');
+    }catch(PDOException $err){
+        $error = 'Ошибка при получении списка категорий' . $err->getMessage();
+        include $_SERVER['DOCUMENT_ROOT'] . '/error.html.php';
+        exit;
+    }
+    foreach ($result as $item) {
+        $categories[] = [
+            'id'=>$item['id'],
+            'name'=>$item['cat_name'],
+            'selected'=>FALSE
+        ];
+    }
+
+
+
+    include 'form.html.php';
+    exit;
+}
 
 //запрос SELECT
 if(isset($_GET['action']) && $_GET['action'] == 'search' ){
@@ -80,7 +170,7 @@ foreach ($result as $item) {
 }
 include 'searchform.html.php';
 
-
+var_dump($_REQUEST);
 
 
 
